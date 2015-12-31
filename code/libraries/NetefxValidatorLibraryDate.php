@@ -7,27 +7,29 @@
 * @package NetefxValidator
 */
 
-class NetefxValidatorLibraryDate {
+class NetefxValidatorLibraryDate
+{
 
 
-// ************************ Often used functions for validation **********************
-		
+    // ************************ Often used functions for validation **********************
+
      /** Date is at least x days in past
        *        
        * $rule_past_1    = new NetefxValidatorRuleFUNCTION ("End", "End must be in past",'error',
        *          											array('NetefxValidatorLibraryDate', 'DateIsMinDaysBeforeToday', array('date'  => 'End', 'min'   => 1)));               
     */
         
-        static function DateIsMinDaysBeforeToday ($data, $args) {
-        	$field_date = $args["date"];
+        public static function DateIsMinDaysBeforeToday($data, $args)
+        {
+            $field_date = $args["date"];
             
             // A) date is defined as a date (YYYY-MM-DD)
-            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/',$field_date)) {
-                $date = $args["date"];  
+            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/', $field_date)) {
+                $date = $args["date"];
             }
             // B) date is defined as the name of another inputfield
             else {
-                $date = $data[$field_date];  
+                $date = $data[$field_date];
             }
             
             $today1 = getdate();
@@ -35,13 +37,15 @@ class NetefxValidatorLibraryDate {
                         
             $min = (int)$args["min"];
             
-            if ($date=="") return false;
+            if ($date=="") {
+                return false;
+            }
             
             $timestamp_dateFrom  = strtotime($date);
             $timestamp_dateUntil = strtotime($today);
             $days_dif = ($timestamp_dateUntil - $timestamp_dateFrom)/86400;
             
-            return ($days_dif >= $min);       
+            return ($days_dif >= $min);
         }
         
         
@@ -52,16 +56,17 @@ class NetefxValidatorLibraryDate {
        *                      
     */
         
-        static function DateIsMinDaysAfterToday ($data, $args) {
-        	$field_date = $args["date"];
+        public static function DateIsMinDaysAfterToday($data, $args)
+        {
+            $field_date = $args["date"];
             
             // A) date is defined as a date (YYYY-MM-DD)
-            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/',$field_date)) {
-                $date = $args["date"];  
+            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/', $field_date)) {
+                $date = $args["date"];
             }
             // B) date is defined as the name of another inputfield
             else {
-                $date = $data[$field_date];  
+                $date = $data[$field_date];
             }
             
             $today1 = getdate();
@@ -69,13 +74,15 @@ class NetefxValidatorLibraryDate {
                         
             $min = (int)$args["min"];
             
-            if ($date=="") return false;
+            if ($date=="") {
+                return false;
+            }
             
             $timestamp_dateUntil  = strtotime($date);
             $timestamp_dateFrom = strtotime($today);
             $days_dif = ($timestamp_dateUntil - $timestamp_dateFrom)/86400;
             
-            return ($days_dif >= $min);       
+            return ($days_dif >= $min);
         }
         
         /** date B is at least x days after date A
@@ -85,23 +92,25 @@ class NetefxValidatorLibraryDate {
          *      
          */
         
-        static function UntilIsMinDaysAfterFrom ($data, $args) {
-            
+        public static function UntilIsMinDaysAfterFrom($data, $args)
+        {
             $field_dateFrom = $args["dateFrom"];
             
             // A) dateFrom is defined as a date (YYYY-MM-DD)
-            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/',$field_dateFrom)) {
-                $dateFrom = $args["dateFrom"];  
+            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/', $field_dateFrom)) {
+                $dateFrom = $args["dateFrom"];
             }
             // B) dateFrom is defined as the name of another inputfield
             else {
-                $dateFrom = $data[$field_dateFrom];  
+                $dateFrom = $data[$field_dateFrom];
             }
             
             $dateUntil = $data[$args["dateUntil"]];
             $min = (int)$args["min"];
             
-            if (($dateFrom=="") OR ($dateUntil=="")) return false;
+            if (($dateFrom=="") or ($dateUntil=="")) {
+                return false;
+            }
             
             $timestamp_dateFrom  = strtotime($dateFrom);
             $timestamp_dateUntil = strtotime($dateUntil);
@@ -114,24 +123,28 @@ class NetefxValidatorLibraryDate {
          * date B is at least x days after date A (both empty allowed)
          * 
          */
-		static function UntilIsMinDaysAfterFromOptional ($data, $args) {
-            
+        public static function UntilIsMinDaysAfterFromOptional($data, $args)
+        {
             $field_dateFrom = $args["dateFrom"];
             
             // A) dateFrom is defined as a date (YYYY-MM-DD)
-            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/',$field_dateFrom)) {
-                $dateFrom = $args["dateFrom"];  
+            if (preg_match('/[\d]{4}+[\-]+[\d]{2}+[\-]+[\d]{2}/', $field_dateFrom)) {
+                $dateFrom = $args["dateFrom"];
             }
             // B) dateFrom is defined as the name of another inputfield
             else {
-                $dateFrom = $data[$field_dateFrom];  
+                $dateFrom = $data[$field_dateFrom];
             }
             
             $dateUntil = $data[$args["dateUntil"]];
             $min = (int)$args["min"];
             
-            if (($dateFrom=="") AND ($dateUntil=="")) return true;
-            if (($dateFrom=="") OR ($dateUntil=="")) return false;
+            if (($dateFrom=="") and ($dateUntil=="")) {
+                return true;
+            }
+            if (($dateFrom=="") or ($dateUntil=="")) {
+                return false;
+            }
             
             $timestamp_dateFrom  = strtotime($dateFrom);
             $timestamp_dateUntil = strtotime($dateUntil);
@@ -139,5 +152,4 @@ class NetefxValidatorLibraryDate {
             
             return ($days_dif >= $min);
         }
-          
 }
